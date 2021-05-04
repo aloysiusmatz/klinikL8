@@ -317,13 +317,19 @@
             
             <div class="card-body">
                 
-                <div class="mb-2">
-                    <input type="file" class="form-control-file" id="checkupImage" name="checkupImage[]" multiple="">
-                </div>
-                
-                
+                <form action="{{ route('checkup.update', $displaycheckup->id) }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <div class="mb-2">
+                        <input type="file" class="form-control-file" id="checkupImage" name="checkupImage[]" multiple="">
+                        <button type="submit" class="btn btn-sm btn-primary mt-2">Upload</button>
+                    </div>
+                </form>
+
                 @foreach($transactions_images as $temp_ti)
-                    <img src="{{ asset('storage/CheckupPhoto/'.$displaycheckup->id.'/'.$temp_ti->image_url ) }}" style="max-height:500px;">
+                    
+                    <img src="{{ asset('storage/CheckupPhoto/'.$displaycheckup->id.'/'.$temp_ti->image_url ) }}" style="max-height:500px;padding:5px">
+                    
                 @endforeach
             </div>
             <!-- /.card-body -->        

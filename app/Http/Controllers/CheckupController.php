@@ -12,6 +12,7 @@ use App\Models\generalfunction;
 
 class CheckupController extends Controller
 {
+    // use Auth;
     /**
      * Display a listing of the resource.
      *
@@ -182,6 +183,11 @@ class CheckupController extends Controller
      */
     public function edit($id)
     {
+        $access = generalfunction::checkPermission('edit checkup');
+        if (!$access) {
+            return redirect(route('checkup.index'));
+        }
+
         $displaycheckup = transactions::find($id);
         /* diremark karena medicine menggunakan freetext
         $q = '
@@ -229,7 +235,32 @@ class CheckupController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        if ($request->hasFile('checkupImage')){
+            $images = $request->file('checkupImage');
+            
+            if (!empty($images)){
+                foreach($images as $temp_images){
+                    $path = $temp_images->store('CheckupPhoto/'.$id, 'public');
+                    $strPath = strval($path);
+                    $filePath = explode('/',$strPath);
+                    $fileName = $filePath[count($filePath)-1];
+                    $insert3 = new transactions_images();
+                    $insert3->transactions_id = $id;
+                    $insert3->information = $temp_images->getClientOriginalName();
+                    $insert3->image_url = $fileName;
+                    $insert3->save();
+
+                }
+                
+                generalfunction::notificationMsg($request, 'success', 'Medical checkup updated successfully');
+            }
+        }else{
+            generalfunction::notificationMsg($request, 'warning', 'No data change');
+        }
+
+        return back();
+        
     }
 
     /**
@@ -253,7 +284,8 @@ class CheckupController extends Controller
                 select a.*, b.medrec_name 
                 from transactions a, medrecs b
                 where date(a.created_at) = current_date
-                and a.medrec_id = b.id';
+                and a.medrec_id = b.id
+                order by a.created_at desc';
             }elseif($query == 'month'){
                 $month = date('m');
                 $year = date('Y');
@@ -262,7 +294,8 @@ class CheckupController extends Controller
                 from transactions a, medrecs b
                 where month(a.created_at) = "'.$month.'"
                 and year(a.created_at) = "'.$year.'"
-                and a.medrec_id = b.id';
+                and a.medrec_id = b.id
+                order by a.created_at desc';
             }else{ //select range
                 $str = strval($query);
                 $range = explode(',', $str);
@@ -274,14 +307,14 @@ class CheckupController extends Controller
                     from transactions a, medrecs b
                     where date(a.created_at) between "'.$range_from.'" and "'.$range_to.'"
                     and a.medrec_id = b.id
-                    ';
+                    order by a.created_at desc';
                 }else{
                     $query = '
                     select a.*, b.medrec_name 
                     from transactions a, medrecs b
                     where date(a.created_at) = "'.$range_from.'"
                     and a.medrec_id = b.id
-                    ';
+                    order by a.created_at desc';
                 }
             }
         }
@@ -301,9 +334,23 @@ class CheckupController extends Controller
                         <td>
                             <div class="flex"> 
                                 <span>'.$temp_result->id.'</span>
-                                <a href="'.route('checkup.show', $temp_result->id).'" class="btn btn-xs btn-success ml-3">Show</a>
-                                <a href="'.route('checkup.edit', $temp_result->id).'" class="btn btn-xs btn-primary">Edit</a>
+                                ';
+                
+                if(auth()->user()->hasPermissionTo('show checkup') || auth()->user()->hasRole('level4')){
+                    $output = $output.
+                    '<a href="'.route('checkup.show', $temp_result->id).'" class="btn btn-xs btn-success ml-3">Show</a>
+                    ';
+                }
+                    
 
+                if(auth()->user()->hasPermissionTo('edit checkup') || auth()->user()->hasRole('level4')){
+                    $output = $output.
+                    '<a href="'.route('checkup.edit', $temp_result->id).'" class="btn btn-xs btn-primary">Edit</a>
+                    ';
+                }
+                                
+
+                $output = $output.'               
                             </div>
                             
                         </td>

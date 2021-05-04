@@ -78,7 +78,7 @@
         <ul class="navbar-nav ml-auto">
         
         <form id="logout-form" action="{{ route('logout') }}" method="POST" >
-            {{ csrf_field() }}
+            @csrf
             <button type="submit" class="btn btn-default">Logout</button>
         </form>
         </ul>

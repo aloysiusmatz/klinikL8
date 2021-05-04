@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.app')
 
 @section('content')
 <!-- Content Header (Page header) -->
@@ -24,7 +24,8 @@
                     <!-- /.card-header -->
                     <!-- form start -->
                     <form role="form" method="POST" action="{{ route('gensettings.update', '1') }}">
-                        {{ csrf_field() }}
+                        @csrf
+                        @method('PUT')
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="companyname">{{ $companyname->setting_show }}</label>
@@ -35,7 +36,6 @@
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                            {{Form::hidden('_method', 'PUT')}}
                             <button type="submit" class="btn btn-primary">Save</button>
                         </div>
                     </form>

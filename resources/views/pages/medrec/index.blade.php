@@ -10,7 +10,10 @@
         </div>
         <div class="col-sm-6">
             <div class="float-sm-right">
-                <a href="{{route('medrec.create')}}" class="btn btn-default">Create</a>
+                @can('create medrec')
+                <a href="{{route('medrec.create')}}" class="btn btn-default">Create</a>    
+                @endcan
+                
             </div>
         </div>
     </div><!-- /.container-fluid -->
@@ -97,8 +100,15 @@
                                                     <td>{{ $temp_listdata->address }}</td>
                                                     <td>{{ $temp_listdata->city }}</td>
                                                     <td>{{ $temp_listdata->phone1 }}</td>
-                                                    <td><a href="{{ route('medrec.edit', $temp_listdata->id) }}" class="btn btn-xs btn-primary">Edit</a>
-                                                        <a href="{{ route('checkup.create', ['medrec' => $temp_listdata->id]) }}" class="btn btn-xs btn-warning">Create Checkup</a></td>
+                                                    <td>
+                                                        @can('edit medrec')
+                                                        <a href="{{ route('medrec.edit', $temp_listdata->id) }}" class="btn btn-xs btn-primary">Edit</a>    
+                                                        @endcan
+                                                        @can('create checkup')
+                                                        <a href="{{ route('checkup.create', ['medrec' => $temp_listdata->id]) }}" class="btn btn-xs btn-warning">Create Checkup</a>
+                                                        @endcan
+                                                        
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         @endif

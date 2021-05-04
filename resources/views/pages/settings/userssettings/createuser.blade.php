@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.app')
 
 @section('content')
 <!-- Content Header (Page header) -->
@@ -29,7 +29,9 @@
                     <!-- /.card-header -->
                     <!-- form start -->
                     <form  method="POST" action=" {{ route('usrsettings.store') }} ">
-                        {{ csrf_field() }}
+                        @csrf
+                        @method('POST')
+
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="username">Name</label>
@@ -63,8 +65,9 @@
                             <div class="form-group">
                                 <label for="userlevel">Level</label>
                                     <select id="userlevel" name="userlevel" class="form-control select2" style="width: 100%;">
-                                        <option selected="selected">Admin</option>
-                                        <option>Manager</option>
+                                        <option selected="selected">Level1</option>
+                                        <option>Level2</option>
+                                        <option>Level3</option>
                                     </select>
                             </div>
                             @if ($errors->has('userlevel'))

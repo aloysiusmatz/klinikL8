@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.app')
 
 @section('content')
 <!-- Content Header (Page header) -->
@@ -26,7 +26,7 @@
                     <div class="card-header">
                         <h3 class="card-title">User Details</h3>
                         <form method="POST" action="{{route('usrsettings.destroy', $edititem->id)}}" accept-charset="UTF-8">
-                            {{ csrf_field() }}
+                            @csrf
                             <button type="submit" class="btn btn-xs btn-danger float-right">Delete</button>
                             <input name="_method" type="hidden" value="DELETE">
                         </form>
@@ -34,7 +34,8 @@
                     <!-- /.card-header -->
                     <!-- form start -->
                     <form  method="POST" action=" {{ route('usrsettings.update', $edititem->id) }} ">
-                        {{ csrf_field() }}
+                        @csrf
+                        @method('PUT')
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="userid">ID</label>
@@ -57,7 +58,7 @@
                             <p class="text-danger">{{ $errors->first('useremail') }}</p>
                             @endif
 
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label for="userlevel">Level</label>
                                     <select id="userlevel" name="userlevel" class="form-control select2" style="width: 100%;">
                                         @php( $level = ['Admin', 'Manager'] )
@@ -68,7 +69,7 @@
                                             <option selected="selected">
                                             @else
                                             <option>
-                                            @endif
+                                            @endif 
                                             {{ $temp_level }}
                                             </option>
                                         @endforeach
@@ -76,21 +77,56 @@
                             </div>
                             @if ($errors->has('userlevel'))
                             <p class="text-danger">{{ $errors->first('userlevel') }}</p>
-                            @endif                            
+                            @endif                             --}}
 
                             <div class="form-group">
-                            {{ Form::hidden('_method', 'PUT') }}
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>    
-                        </div>
-                        <!-- /.card-body -->
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>    
 
-                                                              
+                        </div>
+                        <!-- /.card-body -->                                      
                     </form>
 
                 </div>
                 <!-- /.card -->
             </div>
+
+
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="card card-default">
+                    <div class="card-header">
+                        <h3 class="card-title">Update Password</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form  method="POST" action=" {{ route('usrsettings.updatepass', $edititem->id) }} ">
+                        @csrf
+                        @method('GET')
+                        <div class="card-body">
+                          
+                            <div class="form-group">
+                                <label for="new_password">New Password</label>
+                                <input id="new_password" name="new_password" type="password" class="form-control">
+                            </div>
+                            @if ($errors->has('new_password'))
+                            <p class="text-danger">{{ $errors->first('new_password') }}</p>
+                            @endif
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>    
+
+                        </div>
+                        <!-- /.card-body -->                                      
+                    </form>
+
+                </div>
+                <!-- /.card -->
+            </div>
+
+
+
         </div>
     </div>
 </section>

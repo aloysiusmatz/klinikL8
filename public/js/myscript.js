@@ -189,7 +189,7 @@ $(document).ready(function(){
 
     function fetch_history_medrec(query){
         $.ajax({
-            url:"/klinik/public/historycheckup",
+            url:"/historycheckup",
             method:"GET",
             data:{query:query},
             dataType:'json',

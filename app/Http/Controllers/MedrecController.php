@@ -108,7 +108,11 @@ class MedrecController extends Controller
      */
     public function edit($id)
     {
-        
+        $access = generalfunction::checkPermission('edit medrec');
+        if (!$access) {
+            return redirect(route('medrec.index'));
+        }
+
         $edititem = medrec::find($id);
 
         return view('pages.medrec.edit')

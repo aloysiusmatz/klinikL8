@@ -110,4 +110,16 @@ class generalfunction extends Model
         }
         return $q;  
     }
+
+    static public function checkPermission($permission_name){
+        
+        $access = false;
+
+        if(auth()->user()->hasPermissionTo($permission_name) || auth()->user()->hasRole('level4') ){
+            $access = true;
+        }
+
+        return $access;
+
+    }
 }

@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.app')
 
 @section('content')
 <!-- Content Header (Page header) -->
@@ -43,17 +43,17 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if(count($listdata) > 0)
-                                            @foreach($listdata as $temp_listdata)
-                                                <tr>
-                                                    <td>{{ $temp_listdata->id }}</td>
-                                                    <td>{{ $temp_listdata->name }}</td>
-                                                    <td>{{ $temp_listdata->email }}</td>
-                                                    <td>{{ $temp_listdata->level }}</td>
-                                                    <td><a href="/klinik/public/usrsettings/{{ $temp_listdata->id }}/edit" class="btn btn-xs btn-primary">Edit</a></td>
-                                                </tr>
-                                            @endforeach
-                                        @endif
+                                       
+                                        @foreach($listdata as $temp_listdata)
+                                            <tr>
+                                                <td>{{ $temp_listdata->id }}</td>
+                                                <td>{{ $temp_listdata->name }}</td>
+                                                <td>{{ $temp_listdata->email }}</td>
+                                                <td>{{ $temp_listdata->role }}</td>
+                                                <td><a href="/usrsettings/{{ $temp_listdata->id }}/edit" class="btn btn-xs btn-primary">Edit</a></td>
+                                            </tr>
+                                        @endforeach
+                                     
                                     </tbody>
                                 </table>
                             </div>

@@ -316,7 +316,7 @@
 
             <div class="card-body">
                 @foreach($transactions_images as $temp_ti)
-                    <img src="{{ asset('storage/CheckupPhoto/'.$displaycheckup->id.'/'.$temp_ti->image_url ) }}" style="max-height:500px;">
+                    <img src="{{ asset('storage/CheckupPhoto/'.$displaycheckup->id.'/'.$temp_ti->image_url ) }}" style="max-height:500px;padding:5px">
                 @endforeach
             </div>
             <!-- /.card-body -->        
